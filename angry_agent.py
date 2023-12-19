@@ -1,12 +1,11 @@
-import random
-from constants import DIESIDE
-from constants import MAX_HEALTH
+from constants import PlayerState, DIESIDE, MAX_HEALTH
+from typing import List
 
 class PlayerStrategy:
   def yield_tokyo(self, me, other_player):
     return me.health <= 5
         
-  def keep_dice(self, me, other_player, dice, reroll_n):
+  def keep_dice(self, me: PlayerState, other_player: PlayerState, dice: List[DIESIDE], reroll_n: int):
     heals = 0
     to_heal = MAX_HEALTH - me.health
     keep_mask = []

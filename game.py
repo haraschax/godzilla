@@ -1,22 +1,14 @@
  
 import random
-from dataclasses import dataclass
-from typing import List
-from constants import DIESIDE, MAX_HEALTH, VICTORY_PTS_WIN, DIE_COUNT
-
-@dataclass
-class PlayerState:
-    health: int = 10
-    victory_points: int = 0
-    in_tokyo: bool = False
+from constants import DIESIDE, MAX_HEALTH, VICTORY_PTS_WIN, DIE_COUNT, PlayerState
 
 class Game:
-    def __init__(self, player_strategies=[]):
+    def __init__(self, player_strategies=[], start_idx=0):
         self.players = [PlayerState() for _ in range(2)]
         self.player_strategies = player_strategies
         assert len(self.player_strategies) == len(self.players)
         self.winner = -1
-        self.current_player_idx = 0
+        self.current_player_idx = start_idx
     
     @property
     def n_players(self):
@@ -106,7 +98,7 @@ if __name__ == '__main__':
   import importlib
   import sys
   if len(sys.argv) != 3:
-    print('Example usage: python game.py random_agent simple_agent')
+    print('Example usage: python game.py random_agent random_agent')
     sys.exit(1)
   _, strategy_one, strategy_two =sys.argv
   module_one = importlib.import_module(strategy_one)
@@ -114,7 +106,8 @@ if __name__ == '__main__':
   GAMES_N = 100
   winners = []
   for i in range(GAMES_N):
-    game = Game(player_strategies=[module_one.PlayerStrategy(), module_two.PlayerStrategy()])
+    game = Game(player_strategies=[module_one.PlayerStrategy(), module_two.PlayerStrategy()],
+                start_idx=i%2)
     while game.winner == -1:
       game.step()
     winners.append(game.winner)
