@@ -1,5 +1,5 @@
 # Play King of Tokyo with python
-A simplified digital version of [King of Tokyo](https://boardgamegeek.com/boardgame/70323/king-tokyo). Just implement two functions to play! Is it easy to play perfectly? I have no idea, let's find out! To get started just run:
+This repo contains a simplified digital version of [King of Tokyo](https://boardgamegeek.com/boardgame/70323/king-tokyo). Just implement two functions to play! Is it easy to play perfectly? I have no idea, let's find out! To get started just run:
 ```
 python game.py random_agent angry_agent
 ```
