@@ -48,7 +48,7 @@ class Game:
           cnt = sum([x == dieside for x in dice])
           if cnt >= 3:
             self.current_player.victory_points += int(dieside)
-            self.current_player.victory_points += min(0, cnt - 3)
+            self.current_player.victory_points += cnt - 3
 
     def resolve_health_dice(self, dice):
         heals = sum([x == DIESIDE.HEAL for x in dice])
