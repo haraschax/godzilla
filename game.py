@@ -61,7 +61,7 @@ class Game:
           self.other_player.health  = self.other_player.health - attack
         elif self.other_player.in_tokyo:
           self.other_player.health  = self.other_player.health - attack
-          if self.other_player_yields_tokyo():
+          if attack > 0 and self.other_player_yields_tokyo():
             self.current_player.in_tokyo = True
             self.other_player.in_tokyo = False
         else:
