@@ -2,7 +2,7 @@ from constants import PlayerState, DIESIDE, MAX_HEALTH
 from typing import List
 
 class PlayerStrategy:
-  def yield_tokyo(self, me, other_player):
+  def yield_tokyo(self, me, other_player, dice: List[DIESIDE]):
     return me.health <= 5
         
   def keep_dice(self, me: PlayerState, other_player: PlayerState, dice: List[DIESIDE], reroll_n: int):

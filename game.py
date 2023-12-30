@@ -26,8 +26,8 @@ class Game:
     def other_player(self):
       return self.players[self.other_player_idx]
 
-    def other_player_yields_tokyo(self):
-        return self.player_strategies[self.other_player_idx].yield_tokyo(self.other_player, self.current_player)
+    def other_player_yields_tokyo(self, dice):
+        return self.player_strategies[self.other_player_idx].yield_tokyo(self.other_player, self.current_player, dice)
 
     def start_turn(self):
         if self.current_player.in_tokyo:
@@ -61,7 +61,7 @@ class Game:
           self.other_player.health  = self.other_player.health - attack
         elif self.other_player.in_tokyo:
           self.other_player.health  = self.other_player.health - attack
-          if attack > 0 and self.other_player_yields_tokyo():
+          if attack > 0 and self.other_player_yields_tokyo(dice):
             self.current_player.in_tokyo = True
             self.other_player.in_tokyo = False
         else:
@@ -83,8 +83,8 @@ class Game:
 
     def step(self):
         self.start_turn()
-        dice = self.roll_dice()
-        self.resolve_dice(dice)
+        dice = self.roll_dice() # this has 2 moves by the current player (2 x keep_dice)
+        self.resolve_dice(dice) # this has one move by the other player (yield_tokyo)
         self.check_winner()
         self.current_player_idx = (self.current_player_idx + 1) % self.n_players
     
