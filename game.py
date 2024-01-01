@@ -1,4 +1,5 @@
 import random
+import copy
 from constants import DIESIDE, MAX_HEALTH, VICTORY_PTS_WIN, DIE_COUNT, PlayerState
 
 class Game:
@@ -31,7 +32,7 @@ class Game:
         return players_in_tokyo.index(True)
 
     def other_player_yields_tokyo(self, dice):
-        return self.player_strategies[self.other_player_idx].yield_tokyo(self.other_player, self.current_player, dice)
+        return self.player_strategies[self.other_player_idx].yield_tokyo(copy.deepcopy(self.other_player), copy.deepcopy(self.current_player), copy.deepcopy(dice))
 
     def start_turn(self):
         if self.current_player.in_tokyo:
@@ -43,7 +44,7 @@ class Game:
     def roll_dice(self):
         dice_results = self.roll_n_dice(DIE_COUNT)
         for i in range(2):
-            keep_mask = self.player_strategies[self.current_player_idx].keep_dice(self.current_player, self.other_player, dice_results, reroll_n=i)
+            keep_mask = self.player_strategies[self.current_player_idx].keep_dice(copy.deepcopy(self.current_player), copy.deepcopy(self.other_player), copy.deepcopy(dice_results), reroll_n=i)
             dice_results = [dice_results[i] for i in range(DIE_COUNT) if keep_mask[i]] + self.roll_n_dice(DIE_COUNT - sum(keep_mask))
         return dice_results
 
