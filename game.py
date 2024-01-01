@@ -1,4 +1,3 @@
- 
 import random
 from constants import DIESIDE, MAX_HEALTH, VICTORY_PTS_WIN, DIE_COUNT, PlayerState
 
@@ -9,22 +8,27 @@ class Game:
         assert len(self.player_strategies) == len(self.players)
         self.winner = -1
         self.current_player_idx = start_idx
-    
+
     @property
     def n_players(self):
         return len(self.players)
-    
+
     @property
     def current_player(self):
         return self.players[self.current_player_idx]
-    
+
     @property
     def other_player_idx(self):
         return (self.current_player_idx + 1) % self.n_players
 
     @property
     def other_player(self):
-      return self.players[self.other_player_idx]
+        return self.players[self.other_player_idx]
+
+    @property
+    def tokyo_player_idx(self):
+        players_in_tokyo = [player.in_tokyo for player in self.players]
+        return players_in_tokyo.index(True)
 
     def other_player_yields_tokyo(self, dice):
         return self.player_strategies[self.other_player_idx].yield_tokyo(self.other_player, self.current_player, dice)
@@ -32,7 +36,7 @@ class Game:
     def start_turn(self):
         if self.current_player.in_tokyo:
             self.current_player.victory_points += 2
-    
+
     def roll_n_dice(self, n):
         return [random.choice([DIESIDE.ATTACK, DIESIDE.HEAL, DIESIDE.ONE, DIESIDE.TWO, DIESIDE.THREE]) for _ in range(n)]
 
@@ -73,7 +77,7 @@ class Game:
         self.resolve_victory_point_dice(dice)
         self.resolve_health_dice(dice)
         self.resolve_attack_dice(dice)
-    
+
     def check_winner(self):
         for i, player in enumerate(self.players):
             if player.health <= 0:
@@ -83,14 +87,14 @@ class Game:
 
     def step(self):
         self.start_turn()
-        dice = self.roll_dice() # this has 2 moves by the current player (2 x keep_dice)
-        self.resolve_dice(dice) # this has one move by the other player (yield_tokyo)
+        dice = self.roll_dice()
+        self.resolve_dice(dice)
         self.check_winner()
         self.current_player_idx = (self.current_player_idx + 1) % self.n_players
-    
+
     def __str__(self):
         return (f'GAME STATE: player {self.tokyo_player_idx} is in tokyo \n' +
-                f'Players 0 has {self.players[0].health} health and {self.players[0].victory_points} victory points \n' +  
+                f'Players 0 has {self.players[0].health} health and {self.players[0].victory_points} victory points \n' +
                 f'Players 1 has {self.players[1].health} health and {self.players[1].victory_points} victory points')
 
 
@@ -102,7 +106,7 @@ if __name__ == '__main__':
     sys.exit(1)
   _, strategy_one, strategy_two =sys.argv
   module_one = importlib.import_module(strategy_one)
-  module_two = importlib.import_module(strategy_two) 
+  module_two = importlib.import_module(strategy_two)
   GAMES_N = 100
   winners = []
   for i in range(GAMES_N):
